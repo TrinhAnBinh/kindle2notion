@@ -1,5 +1,10 @@
 This read me as guide for:
 ### todo
+---
+- feat:
+[ ] add the update page
+[ ] separate the list into 100 items in a list
+[ ] get the id of page after creating page, will apply the page after
 
 
 # Kindle Clippings to Notion Pages
