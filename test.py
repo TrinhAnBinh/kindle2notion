@@ -1,5 +1,6 @@
 import re, requests, json
 from time import sleep, time
+from update_page import update_children
 
 path = './test.txt'
 path = 'My Clippings.txt'
@@ -84,7 +85,7 @@ def convert_book(notes : list) -> list:
 
 data = convert_book(notes)
 
-secrets_key = 'secret_GvWVcVtp70axJ1JeKXNdrBOlkz0q5RJaD8lDk1Ldbz7'
+# secrets_key = 'secret_GvWVcVtp70axJ1JeKXNdrBOlkz0q5RJaD8lDk1Ldbz7'
 f = open('config.json')
 conf = json.load(f)
 secret = conf['api_token']
@@ -171,17 +172,38 @@ def create_data_input(data):
 		return data_inputs
 
 def create_pages(data_inputs):
-	if data_inputs[0]:
-		pages_infor = []
-		for data_input in data_inputs:
-			# create notion page
-			with requests.Session() as ses:
-				response = ses.post(url, headers=headers, json=data_input)
+	# if data_inputs[0]:
+	global books
+	pages_infor = []
+	for ix in range(len(data_inputs)):
+		# create notion page
+		with requests.Session() as ses:
+			response = ses.post(url, headers=headers, json=data_inputs[ix])
+			if response.status_code == 200:
 				page_infor = response.json()
+				books[ix].update(
+					{'page_id': page_infor['id']}
+				)
+				print(books)
 				pages_infor.append(page_infor)
-				with open('book_info.json', "a") as b:
-					json.dump(pages_infor,b)
-			sleep(1)
-
+				return 'Page created'
+			else:
+				return f'Error with status code: {response.status_code}' 
+				
+	with open('book_info.json', "a") as b:
+		json.dump(pages_infor,b)
+			
 data_inputs = create_data_input(data)
+books = data_inputs.copy()
 create_pages(data_inputs)
+for i in books:
+	print(i['page_id'])
+
+def update_pages_content(data_inputs: dict) -> str:
+	for book in data_inputs:
+		print('xxxxxxxx')
+		page_id = book['page_id']
+		if len(book['children']) > 100:
+			for ix in range(100,len(book['children'])):
+				content = book['children'][ix]
+				status = update_children(page_id,content)
