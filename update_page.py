@@ -48,8 +48,9 @@ def update_children(page_id: str, content: dict) -> str:
         'Notion-Version': '2022-06-28'
     }
     url = f'https://api.notion.com/v1/blocks/{page_id}/children'
-    response = requests.patch(url, headers=headers, json=content)
-    if response.status_code == 200:
-        return 'Updated'
-    else:
-        return f'Not yet - status code: {response.status_code}'
+    with requests.Session() as ses:
+        response = ses.patch(url, headers=headers, json=content)
+        if response.status_code == 200:
+            return 'Updated'
+        else:
+            return f'Not yet - status code: {response.status_code}'
