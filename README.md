@@ -2,10 +2,12 @@ This read me as guide for:
 ### todo
 ---
 - feat:
-[ ] add the update page
-[ ] separate the list into 100 items in a list
-[ ] get the id of page after creating page, will apply the page after
-
+[x] add the update page
+[x] separate the list into 100 items in a list
+[x] get the id of page after creating page, will apply the page after
+[ ] update the unitest
+[ ] update "updates blocks"
+[ ] create the path to notion notes, config parsing
 
 # Kindle Clippings to Notion Pages
 
