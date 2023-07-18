@@ -203,7 +203,6 @@ highlights = process_clipping(path) # todo need to remove duplicate in the list
 notes = process_notes(highlights)
 data = convert_book(notes)
 data_inputs = create_data_input(data)
-print(data_inputs[0]['children'][101])
 for d in data_inputs:
 	if len(d['children']) >= 100:
 		lock_input = d.copy()
@@ -212,8 +211,6 @@ for d in data_inputs:
 			'children': ini_block
 		})
 		page_id = create_pages(d)
-		print(len(lock_input['children']))
-		# updated_blocks = lock_input['children'][100:] # get the rest of block need to update
 		start = 100
 		num_of_blocks = 50
 		while start < len(lock_input['children']):
