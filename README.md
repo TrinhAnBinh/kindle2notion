@@ -1,13 +1,16 @@
 This read me as guide for:
-### todo
----
-- feat:
-[x] add the update page
-[x] separate the list into 100 items in a list
-[x] get the id of page after creating page, will apply the page after
-[ ] update the unitest
-[ ] update "updates blocks"
-[ ] create the path to notion notes, config parsing
+
+### Todo
+
+- [x]  add the update pages
+- [x]  separate the list into 100 items in a list
+- [x]  get the id of pages after creating pages
+- [x]  if number of block ≥ 100 then retrieve pages id and add block by updating pages
+- [ ]  retrieve the page id
+- [ ]  build skeleton to project: Clipper, Processor, Pages to update and easy in scale
+- [ ]  add the remove, deduplicate in clipping, check-point in the Pages
+- [ ]  Visualization the pages, add some dashboard for monitoring: number of books I read a year. quote of quote,… - ideal - supper set
+- [ ]  add the motivation into the pages
 
 # Kindle Clippings to Notion Pages
 

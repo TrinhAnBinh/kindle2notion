@@ -63,9 +63,9 @@ def convert_book(notes : list) -> list:
 	data = []
 	for n in notes:
 		if len(n['note']) > 2000:
-			n['note'] = n['note'][:1995] + '...'
+			n['note'] = n['note'][:1995] + '...' # length limitation of block
 		if len(n['location']) > 100:
-			n['location'] = n['location'][:95] + '...'
+			n['location'] = n['location'][:95] + '...' # length limitation of heading
 		if n['book_name'] not in books_names:
 			book_item = {
 				'book_name' : n['book_name'],
