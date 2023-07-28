@@ -10,14 +10,14 @@ class Processor:
     def collect_highlight(self) -> list:
         '''
         Construct the list to collect highlights, each combo highligh is structured as list
-        A combo of highligh in the clipping file of kindle:
-        ####
+        A combo of highligh in the clipping file of kindle
+        --------------begin---------------
         ﻿Big Data Analytics  -> book name
         - Your Highlight on page 35-35 | Added on Sunday, May 29, 2022 10:40:48 AM -> location
 
         this section we propose a novel data science and analytics application system design methodology -> content
         ========== -> end of highlight
-        ####
+        --------------end---------------
         highlight = [highligh1, highligh2]
         highligh1 = [book_name, location, content, end of highlight]
         '''
@@ -41,9 +41,8 @@ class Processor:
                             note.append(modify_time.strip())
                         else:
                             note.append(line)
-            # return highlights[:len(highlights)] 
             self.highlights = highlights[:-2]
-            return highlights[:-2]  # remove the empty string 
+            # return highlights[:-2]  # remove the empty string 
         
     def process_notes(self) -> list:
         notes = []
@@ -57,15 +56,12 @@ class Processor:
                     author = book_name[ start_point + 1: end_point]
                 else:
                     author = ''
-                init_note = h[3]
-                for i in range(3, len(h)):
-                    init_note += '. '+h[i]
                 note = {
                     'book_name' : h[0],
                     'author' : author,
                     'location': h[1],
                     'modify_time' : h[2],
-                    'note' : init_note
+                    'note' : h[3]
                 }
                 notes.append(note)
             self.notes = notes
@@ -77,6 +73,5 @@ class Processor:
 processor = Processor(path='My Clippings.txt')
 processor.collect_highlight()
 processor.process_notes()
-
-
-print(processor.notes)
+# test processor
+print(processor.notes[5])
