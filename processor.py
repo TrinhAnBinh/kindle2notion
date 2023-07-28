@@ -111,7 +111,7 @@ processor.collect_highlight()
 processor.process_notes()
 processor.convert_book()
 
-# test processor
-print(processor.notes[5])
-# test convert book
-print(processor.books[0])
+# # test processor
+# print(processor.notes[5])
+# # test convert book
+# print(processor.books[0])
