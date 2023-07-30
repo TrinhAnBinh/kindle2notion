@@ -19,6 +19,7 @@ processor.convert_book()
 notion = Notion(books=processor.books, secret=secret, database=database, url=url)
 notion.convert_books_to_notion_inputs()
 notion.prepare_header()
-# notion.create_pages()
+notion.create_pages()
+# query and save the pages information into the file
 pages_infor_path = 'pages.json'
 notion.get_pages(pages_infor_path=pages_infor_path)
