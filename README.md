@@ -2,14 +2,59 @@ This read me as guide for:
 
 ### Todo
 
+**Fix**
+
 - [x]  add the update pages
 - [x]  separate the list into 100 items in a list
-- [x]  get the id of pages after creating pages
 - [x]  if number of block ≥ 100 then retrieve pages id and add block by updating pages
-- [ ]  retrieve the page id
+
+**Feat**
+
+- [ ]  build the CLI as k2n CLI
+- [ ]  dockerize the application - apply poetry
+- [x]  retrieve the page id
+- [x]  get the id of pages after creating pages
+- [ ]  Visualization the pages, add some dashboard for monitoring: number of books I read a year. quote of quote,… - `ideal` - using the supper set to visualize
 - [ ]  build skeleton to project: Clipper, Processor, Pages to update and easy in scale
-- [ ]  add the remove, deduplicate in clipping, check-point in the Pages
-- [ ]  Visualization the pages, add some dashboard for monitoring: number of books I read a year. quote of quote,… - ideal - supper set
+    - [x]  Processor
+    - [x]  Notion
+- [ ]  Add check point to only process new updated highlight - `important`
+- [ ]  Add Pipe → control flow
+    
+    ```python
+    def function1():
+        print("This is function 1!")
+    
+    def function2():
+        print("This is function 2!")
+    
+    def function3():
+        print("This is function 3!")
+    
+    def execute_functions_by_order(functions_str):
+        # Tách chuỗi thành các hàm dựa trên ký tự ">>"
+        function_list = functions_str.split(">>")
+    
+        for function_name in function_list:
+            function_name = function_name.strip()
+            # Kiểm tra xem tên hàm có tồn tại trong phạm vi global hay local không
+            if function_name in globals() or function_name in locals():
+                # Lấy ra đối tượng hàm từ tên hàm và chạy nó
+                function = globals().get(function_name) or locals().get(function_name)
+                if callable(function):
+                    function()
+                else:
+                    print(f"Error: '{function_name}' is not a callable function.")
+            else:
+                print(f"Error: '{function_name}' does not exist.")
+    
+    # Gọi hàm execute_functions_by_order() và truyền vào chuỗi các tên hàm cần chạy theo thứ tự, phân tách bằng ký tự ">>"
+    execute_functions_by_order("function1 >> function2 >> function3")
+    ```
+    
+
+**Docs**
+
 - [ ]  add the motivation into the pages
 
 # Kindle Clippings to Notion Pages
