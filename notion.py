@@ -1,7 +1,5 @@
 from processor import Processor, PATH
-import json
-
-
+import json, requests, time
 
 class Notion:
     def __init__(self, books, secret, database, url):
@@ -9,7 +7,28 @@ class Notion:
         self.secret = secret
         self.database = database
         self.url = url 
-        self.notion_data_input = []
+        self.root_url = 'https://api.notion.com/v1/pages/'
+        self.notion_data_input = list
+        self.header = dict
+        self.page_id = str
+        self.basic_sort = {
+                            "sorts": [
+                                {
+                                    "property": "Last Edited",
+                                    "direction": "ascending"
+                                }
+                            ]
+                        }
+    
+    def prepare_header(self) -> dict:
+        if self.secret:
+            self.header  =  {
+                'Authorization': f'Bearer {self.secret}',
+                'Content-Type': 'application/json',
+                'Notion-Version': '2022-06-28'
+            }
+        else:
+            BaseException('secret is null, set the secret first')
 
     def convert_books_to_notion_inputs(self):
         '''
@@ -87,26 +106,79 @@ class Notion:
             self.notion_data_input =  data_inputs
         else:
             BaseException('Books notes have no data, rerun the pipeline')
+    
+    def create_page(self, book):
+        with requests.Session() as ses:
+            response = ses.post(self.url, headers=self.header, json=book)
+            if response.status_code == 200:
+                page_infor = response.json()
+            else:
+                raise BaseException(f'Status code - {response.status_code} !')
+        self.page_id = page_infor['id']
+        return page_infor['id'] # page_id
+    
+    def update_page_block(self, page_id: str, content: dict) -> str:
+        '''
+            function to update content for given pages
+        '''
+        # url = f'https://api.notion.com/v1/blocks/{page_id}/children'
+        url = f'https://api.notion.com/v1/blocks/{self.page_id}/children'
+        with requests.Session() as ses:
+            response = ses.patch(url, headers=self.header, json=content)
+            if response.status_code == 200:
+                return 'Updated !'
+            else:
+                return f'Not yet - status code: {response.status_code}'
 
-f = open('config.json')
-conf = json.load(f)
-secret = conf['api_token']
-database = conf['database']
-url = conf['root_url']
-
-
-
-processor = Processor(PATH)
-processor.collect_highlight()
-processor.process_notes()
-processor.convert_book()
-
-# test processor
-print(processor.notes[5])
-# test convert book
-print(processor.books[0])
-
-notion = Notion(books=processor.books, secret=secret, database=database, url=url)
-notion.convert_books_to_notion_inputs()
-
-print(notion.notion_data_input)
+    def create_pages(self):
+        '''
+        Create multiple pages based on the data inputs
+        '''
+        for book in self.notion_data_input:
+            if len(book['children']) >= 100:
+                lock_input = book.copy()
+                ini_block = book['children'][:100]
+                book.update({
+                    'children': ini_block
+                })
+                page_id = self.create_page(book)
+                start = 100
+                num_of_blocks = 50
+                while start < len(lock_input['children']):
+                    end = start + num_of_blocks
+                    if end >= len(lock_input['children']):
+                        end = len(lock_input['children'])
+                    updated_block = {
+                        'children' : lock_input['children'][start : end]
+                    }
+                    status = self.update_page_block(page_id,updated_block)
+                    time.sleep(1)
+                    start += num_of_blocks
+            else:
+                page_id  = self.create_page(book)
+                book_name = book['properties']['title']['title'][0]['text']['content']
+    
+    def delete_page(self, page_id):
+        option = {
+            'archived': False,
+        }
+        url = self.root_url + page_id
+        with requests.Session() as ses:
+            response = requests.patch(url, headers=self.header, json=option)
+            if response.status_code == 200:
+                status = 'Deleted'
+            else:
+                raise BaseException(f'Faile with status code - {response.status_code}')
+    
+    def get_pages(self, pages_infor_path) -> str:
+        '''
+        function to update content for given pages
+        '''
+        url = f'https://api.notion.com/v1/databases/{self.database}/query'
+        with requests.Session() as ses:
+            response = ses.post(url, headers=self.header, json=self.basic_sort)
+            if response.status_code == 200:
+                with open(pages_infor_path, 'w') as f:
+                    f.write(json.dumps(response.json()))
+            else:
+                return f'Not yet - status code: {response.status_code}'

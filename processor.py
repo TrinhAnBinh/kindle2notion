@@ -1,6 +1,6 @@
 import re
 
-PATH = 'test.txt'
+PATH = 'My Clippings.txt'
 
 class Processor:
     '''
@@ -108,13 +108,3 @@ class Processor:
                         d['note'].append(n['note'])
                         d['location'].append(n['location'])
         self.books = data
-
-processor = Processor(PATH)
-processor.collect_highlight()
-processor.process_notes()
-processor.convert_book()
-
-# # test processor
-# print(processor.notes[5])
-# # test convert book
-print(processor.books[3]['note'])

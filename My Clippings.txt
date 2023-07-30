@@ -917,6 +917,8 @@ Việc thiết lập quan hệ thông qua giao tiếp được phân chia thành
 - Your Note on Location 373 | Added on Sunday, June 19, 2022 10:23:21 AM
 
 Theo most important thing.
+sharing the opinion to COO
+sharing the feeling about something
 ==========
 ﻿Bat Song Cam Xuc (Ori;Brafman Brafman;Rom Brafman)
 - Your Highlight on Location 373-375 | Added on Sunday, June 19, 2022 10:23:43 AM
@@ -3547,4 +3549,9 @@ Designing Machine Learning Systems (Chip Huyen)
 - Your Highlight on Location 1195-1220 | Added on Sunday, July 9, 2023 11:43:27 AM
 
 Multiclass versus multilabel classification In both binary and multiclass classification, each example belongs to exactly one class. When an example can belong to multiple classes, we have a multilabel classification problem. For example, when building a model to classify articles into four topics—tech, entertainment, finance, and politics—an article can be in both tech and finance. There are two major approaches to multilabel classification problems. The first is to treat it as you would a multiclass classification. In multiclass classification, if there are four possible classes [tech, entertainment, finance, politics] and the label for an example is entertainment, you represent this label with the vector [0, 1, 0, 0]. In multilabel classification, if an example has both labels entertainment and finance, its label will be represented as [0, 1, 1, 0]. The second approach is to turn it into a set of binary classification problems. For the article classification problem, you can have four models corresponding to four topics, each model outputting whether an article is in that topic or not. Out of all task types, multilabel classification is usually the one that I’ve seen companies having the most problems with. Multilabel means that the number of classes an example can have varies from example to example. First, this makes it difficult for label annotation since it increases the label multiplicity problem that we discuss in Chapter 4. For example, an annotator might believe an example belongs to two classes while another annotator might believe the same example to belong in only one class, and it might be difficult resolving their disagreements. Second, this varying number of classes makes it hard to extract predictions from raw probability. Consider the same task of classifying articles into four topics. Imagine that, given an article, your model outputs this raw probability distribution: [0.45, 0.2, 0.02, 0.33]. In the multiclass setting, when you know that an example can belong to only one category, you simply pick the category with the highest probability, which is 0.45 in this case. In the multilabel setting, because you don’t know how many categories an example can belong to, you might pick the two highest probability categories (corresponding to 0.45 and 0.33) or three highest probability categories (corresponding to 0.45, 0.2, and 0.33).
+==========
+Your Clippings  
+- Your Highlight on Location 621-622 | Added on Sunday, July 9, 2023 10:28:04 PM
+
+Your Note on Location 321 | Added on Sunday, June 19, 2022 10:14:45 AM Tao cam giac minh yeu duoi de nhan duoc su thuong cam
 ==========
