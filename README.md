@@ -19,6 +19,7 @@ This read me as guide for:
     - [x]  Processor
     - [x]  Notion
 - [ ]  Add check point to only process new updated highlight - `important`
+- [ ]  Add CICD to execute when push the clipping on the github - `important`
 - [ ]  Add Pipe → control flow
     
     ```python
