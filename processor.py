@@ -49,7 +49,7 @@ class Processor:
                             note.append(modify_time.strip())
                         else:
                             note.append(line)
-            self.highlights = highlights[:-2]
+            self.highlights = highlights
             # return highlights[:-2]  # remove the empty string 
         
     def process_notes(self) -> list:
@@ -67,12 +67,15 @@ class Processor:
                     author = book_name[ start_point + 1: end_point]
                 else:
                     author = ''
+                note_content = h[3]
+                for i in range(4, len(h)):
+                    note_content += '. '+ h[i]
                 note = {
                     'book_name' : h[0],
                     'author' : author,
                     'location': h[1],
                     'modify_time' : h[2],
-                    'note' : h[3]
+                    'note' : note_content
                 }
                 notes.append(note)
             self.notes = notes
@@ -105,13 +108,3 @@ class Processor:
                         d['note'].append(n['note'])
                         d['location'].append(n['location'])
         self.books = data
-
-processor = Processor(PATH)
-processor.collect_highlight()
-processor.process_notes()
-processor.convert_book()
-
-# test processor
-print(processor.notes[5])
-# test convert book
-print(processor.books[0])
