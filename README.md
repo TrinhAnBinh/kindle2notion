@@ -11,7 +11,7 @@ This read me as guide for:
 **Feat**
 
 - [ ]  build the CLI as k2n CLI
-- [ ]  dockerize the application - apply poetry
+- [ ]  dockerize the application
 - [x]  retrieve the page id
 - [x]  get the id of pages after creating pages
 - [ ]  Visualization the pages, add some dashboard for monitoring: number of books I read a year. quote of quote,… - `ideal` - using the supper set to visualize
@@ -19,9 +19,19 @@ This read me as guide for:
     - [x]  Processor
     - [x]  Notion
 - [ ]  Add check point to only process new updated highlight - `important`
-- [ ]  Add CICD to execute when push the clipping on the github - `important`
-- [ ]  Add Pipe → control flow
-    
+    - [x]  construct the checkpoint abstract
+    - [ ]  apply the checkpoint before and after create pages
+- [ ]  Restructure project with poetry
+    - [x]  install poetry
+    - [x]  get familiar with poetry CLI  - create and format project
+    - [ ]  apply for the pages
+- [ ]  Add CICD to execute when push the clipping on the github
+- [ ]  Add Pipe → control flow - `ideal`
+
+**Docs**
+
+- [ ]  add the motivation into the pages
+---    
     ```python
     def function1():
         print("This is function 1!")
@@ -52,11 +62,6 @@ This read me as guide for:
     # Gọi hàm execute_functions_by_order() và truyền vào chuỗi các tên hàm cần chạy theo thứ tự, phân tách bằng ký tự ">>"
     execute_functions_by_order("function1 >> function2 >> function3")
     ```
-    
-
-**Docs**
-
-- [ ]  add the motivation into the pages
 
 # Kindle Clippings to Notion Pages
 
