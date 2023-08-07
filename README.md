@@ -20,7 +20,10 @@ This read me as guide for:
     - [x]  Notion
 - [ ]  Add check point to only process new updated highlight - `important`
     - [x]  construct the checkpoint abstract
-    - [ ]  apply the checkpoint before and after create pages
+    - [x]  apply the checkpoint after create pages
+    - [x]  save the checkpoint data into the checkpoint file after creating the page
+    - [ ]  load checkpoint information from file (checkpoint.json), base on that filtering number of note.
+    - [ ]  define the mode (update page or create new page?)
 - [ ]  Restructure project with poetry
     - [x]  install poetry
     - [x]  get familiar with poetry CLI  - create and format project
