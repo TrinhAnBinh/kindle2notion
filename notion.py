@@ -1,5 +1,7 @@
 from processor import Processor, PATH
-import json, requests, time
+import json, requests, time, datetime
+
+today = datetime.datetime.now().strftime('%Y-%m-%d')
 
 class Notion:
     def __init__(self, books, secret, database, url):
@@ -119,7 +121,7 @@ class Notion:
     
     def update_page_block(self, page_id: str, content: dict) -> str:
         '''
-            function to update content for given pages
+            Function to update content for given pages
         '''
         # url = f'https://api.notion.com/v1/blocks/{page_id}/children'
         url = f'https://api.notion.com/v1/blocks/{self.page_id}/children'
@@ -130,11 +132,13 @@ class Notion:
             else:
                 return f'Not yet - status code: {response.status_code}'
 
-    def create_pages(self):
+    def create_pages(self): # how to retrieve the pages information as checkpoint formated data
         '''
-        Create multiple pages based on the data inputs
+            Create multiple pages based on the data inputs
         '''
-        for book in self.notion_data_input:
+        checkpoint = []
+        for ix, book in enumerate(self.notion_data_input):
+            book_name = book['properties']['title']['title'][0]['text']['content']
             if len(book['children']) >= 100:
                 lock_input = book.copy()
                 ini_block = book['children'][:100]
@@ -143,7 +147,7 @@ class Notion:
                 })
                 page_id = self.create_page(book)
                 start = 100
-                num_of_blocks = 50
+                num_of_blocks = 99
                 while start < len(lock_input['children']):
                     end = start + num_of_blocks
                     if end >= len(lock_input['children']):
@@ -154,9 +158,13 @@ class Notion:
                     status = self.update_page_block(page_id,updated_block)
                     time.sleep(1)
                     start += num_of_blocks
+                book_info = {'book_name': book_name, 'page_id': page_id, 'database_id': self.database, 'block_offset': len(self.books[ix]['note']), 'created_time': today, 'updated_time': today}
+                checkpoint.append(book_info)
             else:
                 page_id  = self.create_page(book)
-                book_name = book['properties']['title']['title'][0]['text']['content']
+                book_info = {'book_name': book_name, 'page_id': page_id, 'database_id': self.database, 'block_offset': len(self.books[ix]['note']), 'created_time': today, 'updated_time': today}
+                checkpoint.append(book_info)
+        return checkpoint
     
     def delete_page(self, page_id):
         option = {
@@ -172,13 +180,14 @@ class Notion:
     
     def get_pages(self, pages_infor_path) -> str:
         '''
-        function to update content for given pages
+            Function to update content for given pages
         '''
         url = f'https://api.notion.com/v1/databases/{self.database}/query'
         with requests.Session() as ses:
             response = ses.post(url, headers=self.header, json=self.basic_sort)
             if response.status_code == 200:
-                with open(pages_infor_path, 'w') as f:
-                    f.write(json.dumps(response.json()))
+                with open(pages_infor_path, 'w', encoding='utf-8') as f:
+                    # f.write(json.dumps(response.json(), ensure_ascii=False).encode('utf-8'))
+                    json.dump(response.json(), f, ensure_ascii=False)
             else:
                 return f'Not yet - status code: {response.status_code}'

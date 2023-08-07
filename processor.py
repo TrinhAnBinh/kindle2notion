@@ -108,3 +108,13 @@ class Processor:
                         d['note'].append(n['note'])
                         d['location'].append(n['location'])
         self.books = data
+    
+    def books_info(self):
+        books_info = []
+        for book in self.books:
+            book_info = {
+                'book_name' : book['book_name'],
+                'block_offset' : len(book['note'])
+            }
+            books_info.append(book_info)
+        return books_info
