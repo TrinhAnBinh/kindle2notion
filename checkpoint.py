@@ -5,7 +5,7 @@ import json
 
 # Configure the logger
 logging.basicConfig(
-    level=logging.DEBUG,  # Set the logging level to DEBUG (you can adjust this)
+    level=logging.ERROR,  # Set the logging level to DEBUG (you can adjust this)
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 # Create a logger instance
