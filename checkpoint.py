@@ -115,7 +115,7 @@ class Checkpoint:
                 for nv in pages_info:
                     for ix , ov in enumerate(old_pages):
                         if ov['page_id'] == nv['page_id']:   
-                            ov['block_offset'] =  nv['block_offset']
+                            ov['block_offset'] =  nv['block_offset'] # todo verify the logic, replace or accumulate the value?
                             break
                         else:
                             if ix == len(old_pages) - 1: # check is last item
