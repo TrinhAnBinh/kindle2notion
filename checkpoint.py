@@ -16,15 +16,15 @@ class Checkpoint:
         Construct the checkpoint object to load, save pages information checkpoint.
         An example checkpoint data
         data = [
-                {'book_name': '1', 'book_id': '2', 'page_id': '3', 'database_id': '4', 'block_offset': '123121', 'created_time': '6', 'updated_time': '7'},
-                {'book_name': '1', 'book_id': '2', 'page_id': '31', 'database_id': '4', 'block_offset': '11111', 'created_time': '6', 'updated_time': '7'},
-                {'book_name': '1', 'book_id': '2', 'page_id': '311', 'database_id': '4', 'block_offset': '52', 'created_time': '6', 'updated_time': '7'}
+                {'book_name': '1', 'page_id': '3', 'database_id': '4', 'block_offset': '123121', 'created_time': '6', 'updated_time': '7'},
+                {'book_name': '1', 'page_id': '31', 'database_id': '4', 'block_offset': '11111', 'created_time': '6', 'updated_time': '7'},
+                {'book_name': '1', 'page_id': '311', 'database_id': '4', 'block_offset': '52', 'created_time': '6', 'updated_time': '7'}
             ]
     '''
     def __init__(self, path):
         self.path = path
         self.abs_path = os.path.abspath(path)
-        self.keys = ['book_name','book_id','page_id','database_id','block_offset','created_time','updated_time']
+        self.keys = ['book_name','page_id','database_id','block_offset','created_time','updated_time']
 
     def validate_path(self) -> bool:
         if isinstance(self.path, str) and self.path and self.path.endswith('.json'):
@@ -73,14 +73,16 @@ class Checkpoint:
         if self.validate_path():
             if self.validate_info(pages_info):
                 if os.path.exists(self.path):
-                    with open(self.path, 'w') as f:
+                    with open(self.path, 'w', encoding='utf-8') as f:
                         logger.info(f'Save data in path {self.abs_path}')
-                        f.write(json.dumps(pages_info))
+                        # f.write(json.dumps(pages_info, ensure_ascii=False).encode('utf-8'))
+                        json.dump(pages_info, f, ensure_ascii=False)
                 else:
                     self.__init_checkpoint__()
-                    with open(self.path, 'w') as f:
+                    with open(self.path, 'w', encoding='utf-8') as f:
                         logger.info(f'Init and save data in path {self.abs_path}')
-                        f.write(json.dumps(pages_info))
+                        # f.write(json.dumps(pages_info, ensure_ascii=False).encode('utf-8'))
+                        json.dump(pages_info, f, ensure_ascii=False)
             else:
                 logger.error('Pages information is not valid')
         else:
@@ -107,20 +109,23 @@ class Checkpoint:
             Update page information - max block
         '''
         if self.validate_info(pages_info):
-            old_pages = self.load()
-            added_page = []
-            for nv in pages_info:
-                for ix , ov in enumerate(old_pages):
-                    if ov['page_id'] == nv['page_id']:   
-                        ov['block_offset'] =  nv['block_offset']
-                        break
-                    else:
-                        if ix == len(old_pages) - 1: # check is last item
-                            added_page.append(nv)
+            try:
+                old_pages = self.load()
+                added_page = []
+                for nv in pages_info:
+                    for ix , ov in enumerate(old_pages):
+                        if ov['page_id'] == nv['page_id']:   
+                            ov['block_offset'] =  nv['block_offset']
                             break
                         else:
-                            next
-            updated_info = old_pages + added_page
-            return updated_info
+                            if ix == len(old_pages) - 1: # check is last item
+                                added_page.append(nv)
+                                break
+                            else:
+                                next
+                updated_info = old_pages + added_page
+                return updated_info
+            except:
+                return pages_info
         else:
             logger.error('Pages information is not valid')
