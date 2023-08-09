@@ -1,10 +1,11 @@
 from processor import Processor, PATH
 import json, requests, time, datetime
+from checkpoint import logger
 
 today = datetime.datetime.now().strftime('%Y-%m-%d')
 
 class Notion:
-    def __init__(self, books, secret, database, url):
+    def __init__(self, books, secret, database, url, updated_books):
         self.books = books
         self.secret = secret
         self.database = database
@@ -21,6 +22,7 @@ class Notion:
                                 }
                             ]
                         }
+        self.updated_books = updated_books
     
     def prepare_header(self) -> dict:
         if self.secret:
@@ -32,15 +34,15 @@ class Notion:
         else:
             BaseException('secret is null, set the secret first')
 
-    def convert_books_to_notion_inputs(self):
+    def convert_books_to_notion_inputs(self, book_notes):
         '''
             Get the book notes and convert to notion data input following the formated inputs.
             Notion API: https://developers.notion.com/reference/post-page
         '''
-        if self.books:
+        if book_notes:
             data_inputs = []
             # data_updates = []
-            for j in self.books:
+            for j in book_notes:
                 if len(j['note']) > 0: # filtering book have more than one note
                     children = []
                     for k in range(len(j['note'])):
@@ -107,6 +109,7 @@ class Notion:
                     }
                     data_inputs.append(data_input)
             self.notion_data_input =  data_inputs
+            return data_inputs
         else:
             BaseException('Books notes have no data, rerun the pipeline')
     
@@ -133,12 +136,48 @@ class Notion:
             else:
                 return f'Not yet - status code: {response.status_code}'
 
-    def create_pages(self): # how to retrieve the pages information as checkpoint formated data
+    def update_page_blocks(self, books):
+        if books:
+            checkpoint = []
+            for ix, book in enumerate(books):
+                if book:
+                    book_name = book['properties']['title']['title'][0]['text']['content']
+                    page_id = self.updated_books[ix]['page_id']
+                    if len(book['children']) < 100:
+                        updated_block = {
+                            'children' : book['children']
+                        }
+                        status = self.update_page_block(page_id, updated_block)
+                        book_info = {'book_name': book_name, 'page_id': page_id, 'database_id': self.database, 'block_offset': len(self.updated_books[ix]['note']), 'created_time': today, 'updated_time': today}
+                        checkpoint.append(book_info)
+                    else:
+                        lock_input = book.copy()
+                        start = 0
+                        num_of_blocks = 99
+                        while start < len(lock_input['children']):
+                            end = start + num_of_blocks
+                            if end >= len(lock_input['children']):
+                                end = len(lock_input['children'])
+                            updated_block = {
+                                'children' : lock_input['children'][start : end]
+                            }
+                            status = self.update_page_block(page_id, updated_block)
+                            time.sleep(1)
+                            start += num_of_blocks 
+                        book_info = {'book_name': book_name, 'page_id': page_id, 'database_id': self.database, 'block_offset': len(self.updated_books[ix]['note']), 'created_time': today, 'updated_time': today}
+                        checkpoint.append(book_info)
+                else:
+                    logger.info('Book have no new notes')
+            return checkpoint
+        else:
+            logger.info('List of books are null')
+
+    def create_pages(self, books): # how to retrieve the pages information as checkpoint formated data
         '''
             Create multiple pages based on the data inputs
         '''
         checkpoint = []
-        for ix, book in enumerate(self.notion_data_input):
+        for ix, book in enumerate(books):
             book_name = book['properties']['title']['title'][0]['text']['content']
             if len(book['children']) >= 100:
                 lock_input = book.copy()
@@ -192,3 +231,4 @@ class Notion:
                     json.dump(response.json(), f, ensure_ascii=False)
             else:
                 return f'Not yet - status code: {response.status_code}'
+    
