@@ -3555,3 +3555,393 @@ Your Clippings
 
 Your Note on Location 321 | Added on Sunday, June 19, 2022 10:14:45 AM Tao cam giac minh yeu duoi de nhan duoc su thuong cam
 ==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1256-1257 | Added on Tuesday, July 11, 2023 8:09:47 AM
+
+The cross entropy loss of this model, given this example, is the cross entropy of [0.45, 0.2, 0.02, 0.33]
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1255-1276 | Added on Tuesday, July 11, 2023 8:09:54 AM
+
+Consider an article that belongs to the politics class, e.g., its ground truth label is [0, 0, 0, 1]. Imagine that, given this article, your model outputs this raw probability distribution: [0.45, 0.2, 0.02, 0.33]. The cross entropy loss of this model, given this example, is the cross entropy of [0.45, 0.2, 0.02, 0.33] relative to [0, 0, 0, 1]. In Python, you can calculate cross entropy with the following code: import numpy as np def cross_entropy(p, q): return -sum([p[i] * np.log(q[i]) for i in range(len(p))]) p = [0, 0, 0, 1] q = [0.45, 0.2, 0.02, 0.33] cross_entropy(p, q) Choosing an objective function is usually straightforward, though not because objective functions are easy.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1255-1258 | Added on Tuesday, July 11, 2023 8:10:08 AM
+
+Consider an article that belongs to the politics class, e.g., its ground truth label is [0, 0, 0, 1]. Imagine that, given this article, your model outputs this raw probability distribution: [0.45, 0.2, 0.02, 0.33]. The cross entropy loss of this model, given this example, is the cross entropy of [0.45, 0.2, 0.02, 0.33] relative to [0, 0, 0, 1]. In Python, you can calculate cross entropy with the following code:
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1288-1296 | Added on Tuesday, July 11, 2023 8:12:08 AM
+
+However, you quickly learned that optimizing for users’ engagement alone can lead to questionable ethical concerns. Because extreme posts tend to get more engagements, your algorithm learned to prioritize extreme content.13 You want to create a more wholesome newsfeed. So you have a new goal: maximize users’ engagement while minimizing the spread of extreme views and misinformation. To obtain this goal, you add two new objectives to your original plan: Filter out spam Filter out NSFW content Filter out misinformation Rank posts by quality Rank posts by engagement: how likely users will click on it
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1299-1324 | Added on Tuesday, July 11, 2023 8:18:24 AM
+
+quality_loss: the difference between each post’s predicted quality and its true quality.14 Similarly, to rank posts by engagement, you first need to predict the number of clicks each post will get. You want to minimize engagement_loss: the difference between each post’s predicted clicks and its actual number of clicks. One approach is to combine these two losses into one loss and train one model to minimize that loss: loss = ɑ quality_loss + β engagement_loss You can randomly test out different values of α and β to find the values that work best. If you want to be more systematic about tuning these values, you can check out Pareto optimization, “an area of multiple criteria decision making that is concerned with mathematical optimization problems involving more than one objective function to be optimized simultaneously.”15 A problem with this approach is that each time you tune α and β—for example, if the quality of your users’ newsfeeds goes up but users’ engagement goes down, you might want to decrease α and increase β—you’ll have to retrain your model. Another approach is to train two different models, each optimizing one loss. So you have two models: quality_model Minimizes quality_loss and outputs the predicted quality of each post engagement_model Minimizes engagement_loss and outputs the predicted number of clicks of each post You can combine the models’ outputs and rank posts by their combined scores: ɑ quality_score + β engagement_score Now you can tweak α and β without retraining your models! In general, when there are multiple objectives, it’s a good idea to decouple them first because it makes model development and maintenance easier.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1375-1378 | Added on Tuesday, July 11, 2023 8:28:32 AM
+
+Both the research and industry trends in the recent decades show the success of ML relies more and more on the quality and quantity of data. Models are getting bigger and using more data. Back in 2013, people were getting excited when the One Billion Word Benchmark for Language Modeling was released, which contains 0.8 billion tokens.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1385-1389 | Added on Tuesday, July 11, 2023 8:29:55 AM
+
+more data doesn’t always lead to better performance for your model. More data at lower quality, such as data that is outdated or data with incorrect labels, might even hurt your model’s performance.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1392-1394 | Added on Tuesday, July 11, 2023 8:30:46 AM
+
+We started the chapter with an assumption that most businesses don’t care about ML metrics unless they can move business metrics. Therefore, if an ML system is built for a business, it must be motivated by business objectives, which need to be translated into ML objectives to guide the development of ML models.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1394-1397 | Added on Tuesday, July 11, 2023 8:33:02 AM
+
+Before building an ML system, we need to understand the requirements that the system needs to meet to be considered a good system. The exact requirements vary from use case to use case, and in this chapter, we focused on the four most general requirements: reliability, scalability, maintainability, and adaptability. Techniques to satisfy each of these requirements will be covered throughout the book.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1394-1396 | Added on Tuesday, July 11, 2023 8:33:08 AM
+
+Before building an ML system, we need to understand the requirements that the system needs to meet to be considered a good system. The exact requirements vary from use case to use case, and in this chapter, we focused on the four most general requirements: reliability, scalability, maintainability, and adaptability.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1397-1399 | Added on Tuesday, July 11, 2023 8:34:07 AM
+
+Building an ML system isn’t a one-off task but an iterative process. In this chapter, we discussed the iterative process to develop an ML system that met those preceding requirements.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1399-1404 | Added on Tuesday, July 11, 2023 8:35:16 AM
+
+many people who believe that having intelligent algorithms will eventually trump having a large amount of data. However, the success of systems including AlexNet, BERT, and GPT showed that the progress of ML in the last decade relies on having access to a large amount of data.24 Regardless of whether data can overpower intelligent design, no one can deny the importance of data in ML. A nontrivial part of this book will be devoted to shedding light on various data questions.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1509-1511 | Added on Thursday, July 13, 2023 8:32:42 AM
+
+When working with data in production, you usually work with data across multiple processes and services. For example, you might have a feature engineering service that computes features from raw data, and a prediction service to generate predictions based on computed features. This means that you’ll have to pass computed features from the feature engineering service to the prediction service.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1513-1514 | Added on Thursday, July 13, 2023 8:32:59 AM
+
+about two distinct types of data: historical data in data storage engines, and streaming data in real-time transports. These two different types of data require different processing paradigms,
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1524-1524 | Added on Thursday, July 13, 2023 8:35:26 AM
+
+Understanding the sources your data comes from can help you use your data more efficiently.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1521-1524 | Added on Thursday, July 13, 2023 8:35:37 AM
+
+Data Sources An ML system can work with data from many different sources. They have different characteristics, can be used for different purposes, and require different processing methods. Understanding the sources your data comes from can help you use your data more efficiently.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1550-1551 | Added on Thursday, July 13, 2023 8:39:06 AM
+
+There have been many services that process and analyze logs, such as Logstash, Datadog, Logz.io, etc. Many of them use ML models to help you process and make sense of your massive number of logs.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1590-1595 | Added on Thursday, July 13, 2023 8:44:18 AM
+
+Data Formats Once you have data, you might want to store it (or “persist” it, in technical terms). Since your data comes from multiple sources with different access patterns,6 storing your data isn’t always straightforward and, for some cases, can be costly. It’s important to think about how the data will be used in the future so that the format you use will make sense.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1595-1601 | Added on Thursday, July 13, 2023 8:44:46 AM
+
+Here are some of the questions you might want to consider: How do I store multimodal data, e.g., a sample that might contain both images and texts? Where do I store my data so that it’s cheap and still fast to access? How do I store complex models so that they can be loaded and run correctly on different hardware?
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1601-1604 | Added on Thursday, July 13, 2023 8:46:00 AM
+
+The process of converting a data structure or object state into a format that can be stored or transmitted and reconstructed later is data serialization. There are many, many data serialization formats. When considering a format to work with, you might want to consider different characteristics such as human readability, access patterns, and whether it’s based on text or binary, which influences the size of its files.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1672-1675 | Added on Thursday, July 13, 2023 8:57:47 AM
+
+With column-major formats, you can read the four columns corresponding to these four features directly. However, with row-major formats, if you don’t know the sizes of the rows, you will have to read in all columns then filter down to these four columns. Even if you know the sizes of the rows, it can still be slow as you’ll have to jump around the memory, unable to take advantage of caching.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1675-1678 | Added on Thursday, July 13, 2023 8:58:23 AM
+
+Row-major formats allow faster data writes. Consider the situation when you have to keep adding new individual examples to your data. For each individual example, it’d be much faster to write it to a file where your data is already in a row-major format. Overall, row-major formats are better when you have to do a lot of writes, whereas column-major ones are better when you have to do a lot of column-based reads.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1683-1685 | Added on Thursday, July 13, 2023 9:00:41 AM
+
+pandas is built around DataFrame, a concept inspired by R’s Data Frame, which is column-major. A DataFrame is a two-dimensional table with rows and columns.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1685-1689 | Added on Thursday, July 13, 2023 9:01:19 AM
+
+In NumPy, the major order can be specified. When an ndarray is created, it’s row-major by default if you don’t specify the order. People coming to pandas from NumPy tend to treat DataFrame the way they would ndarray, e.g., trying to access data by rows, and find DataFrame slow.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1696-1702 | Added on Thursday, July 13, 2023 9:04:04 AM
+
+When you convert the same DataFrame into a NumPy ndarray, accessing its rows becomes much faster.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1703-1706 | Added on Thursday, July 13, 2023 9:05:31 AM
+
+I use CSV as an example of the row-major format because it’s popular and generally recognizable by everyone I’ve talked to in tech. However, some of the early reviewers of this book pointed out that they believe CSV to be a horrible data format. It serializes nontext characters poorly. For example, when you write float values to a CSV file, some precision might be lost—0.12345678901232323 could be arbitrarily rounded up as “0.12345678901”—
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1721-1725 | Added on Thursday, July 13, 2023 10:51:35 PM
+
+Binary files are more compact. Here’s a simple example to show how binary files can save space compared to text files. Consider that you want to store the number 1000000. If you store it in a text file, it’ll require 7 characters, and if each character is 1 byte, it’ll require 7 bytes. If you store it in a binary file as int32, it’ll take only 32 bits or 4 bytes.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1799-1800 | Added on Thursday, July 13, 2023 11:01:30 PM
+
+You can join the data from different relations back together, but joining can be expensive for large tables.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1811-1817 | Added on Friday, July 14, 2023 7:26:05 AM
+
+With an SQL database, you specify the pattern of data you want—the tables you want the data from, the conditions the results must meet, the basic data transformations such as join, sort, group, aggregate, etc.—but not how to retrieve the data. It is up to the database system to decide how to break the query into different parts, what methods to use to execute each part of the query, and the order in which different parts of the query should be executed. With certain added features, SQL can be Turing-complete, which means that, in theory, SQL can be used to solve any computation problem (without making any guarantee about the time or memory required).
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1820-1827 | Added on Friday, July 14, 2023 7:28:45 AM
+
+Figuring out how to execute an arbitrary query is the hard part, which is the job of query optimizers. A query optimizer examines all possible ways to execute a query and finds the fastest way to do so.13 It’s possible to use ML to improve query optimizers based on learning from incoming queries.14 Query optimization is one of the most challenging problems in database systems, and normalization means that data is spread out on multiple relations, which makes joining it together even harder. Even though developing a query optimizer is hard, the good news is that you generally only need one query optimizer and all your applications can leverage it.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1864-1868 | Added on Friday, July 14, 2023 7:34:29 AM
+
+Declarative ML systems today abstract away the model development part, and as we’ll cover in the next six chapters, with models being increasingly commoditized, model development is often the easier part. The hard part lies in feature engineering, data processing, model evaluation, data shift detection, continual learning, and so on.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1881-1883 | Added on Friday, July 14, 2023 7:39:31 AM
+
+Two major types of nonrelational models are the document model and the graph model. The document model targets use cases where data comes in self-contained documents and relationships between one document and another are rare. The graph model goes in the opposite direction, targeting use cases where relationships between data items are common and important.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1885-1891 | Added on Friday, July 14, 2023 7:46:11 AM
+
+Document model The document model is built around the concept of “document.” A document is often a single continuous string, encoded as JSON, XML, or a binary format like BSON (Binary JSON). All documents in a document database are assumed to be encoded in the same format. Each document has a unique key that represents that document, which can be used to retrieve it.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1958-1961 | Added on Friday, July 14, 2023 7:48:46 AM
+
+The application that reads the documents usually assumes some kind of structure of the documents. Document databases just shift the responsibility of assuming structures from the application that writes the data to the application that reads the data. The document model has better locality than the relational model.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1965-1969 | Added on Friday, July 14, 2023 7:51:01 AM
+
+However, compared to the relational model, it’s harder and less efficient to execute joins across documents compared to across tables. For example, if you want to find all books whose prices are below $25, you’ll have to read all documents, extract the prices, compare them to $25, and return all the documents containing the books with prices below $25. Because of the different strengths of the document and relational data models, it’s common to use both models for different tasks in the same database systems. More and more database systems, such as PostgreSQL and MySQL, support them both.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 1971-1978 | Added on Saturday, July 15, 2023 10:31:34 AM
+
+The graph model is built around the concept of a “graph.” A graph consists of nodes and edges, where the edges represent the relationships between the nodes. A database that uses graph structures to store its data is called a graph database. If in document databases, the content of each document is the priority, then in graph databases, the relationships between data items are the priority. Because the relationships are modeled explicitly in graph models, it’s faster to retrieve data based on relationships.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2016-2018 | Added on Saturday, July 15, 2023 11:08:32 AM
+
+A repository for storing structured data is called a data warehouse. A repository for storing unstructured data is called a data lake. Data lakes are usually used to store raw data before processing. Data warehouses are used to store data that has been processed into formats ready to be used.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2034-2040 | Added on Saturday, July 15, 2023 11:09:39 AM
+
+Data formats and data models specify the interface for how users can store and retrieve data. Storage engines, also known as databases, are the implementation of how data is stored and retrieved on machines. It’s useful to understand different types of databases as your team or your adjacent team might need to select a database appropriate for your application. Typically, there are two types of workloads that databases are optimized for, transactional processing and analytical processing, and there’s a big difference between them, which we’ll cover in this section. We will then cover the basics of the ETL (extract, transform, load) process that you will inevitably encounter when building an ML system in production.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2053-2056 | Added on Saturday, July 15, 2023 11:10:59 AM
+
+The processing method needs to have high availability—that is, the processing system needs to be available any time a user wants to make a transaction. If your system can’t process a transaction, that transaction won’t go through. Transactional databases are designed to process online transactions and satisfy the low latency, high availability requirements.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2053-2056 | Added on Saturday, July 15, 2023 11:11:14 AM
+
+The processing method needs to have high availability—that is, the processing system needs to be available any time a user wants to make a transaction. If your system can’t process a transaction, that transaction won’t go through. Transactional databases are designed to process online transactions and satisfy the low latency, high availability requirements. When people hear transactional databases, they usually think of ACID (atomicity, consistency, isolation, durability).
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2058-2061 | Added on Saturday, July 15, 2023 11:11:31 AM
+
+Atomicity To guarantee that all the steps in a transaction are completed successfully as a group. If any step in the transaction fails, all other steps must fail also. For example, if a user’s payment fails, you don’t want to still assign a driver to that user.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2058-2067 | Added on Saturday, July 15, 2023 11:11:49 AM
+
+Atomicity To guarantee that all the steps in a transaction are completed successfully as a group. If any step in the transaction fails, all other steps must fail also. For example, if a user’s payment fails, you don’t want to still assign a driver to that user. Consistency To guarantee that all the transactions coming through must follow predefined rules. For example, a transaction must be made by a valid user. Isolation To guarantee that two transactions happen at the same time as if they were isolated. Two users accessing the same data won’t change it at the same time. For example, you don’t want two users to book the same driver at the same time. Durability To guarantee that once a transaction has been committed, it will remain committed even in the case of a system failure. For example, after you’ve ordered a ride and your phone dies, you still want your ride to come.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2076-2077 | Added on Saturday, July 15, 2023 11:14:29 AM
+
+Because each transaction is often processed as a unit separately from other transactions, transactional databases are often row-major.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2080-2089 | Added on Saturday, July 15, 2023 11:15:46 AM
+
+However, both the terms OLTP and OLAP have become outdated, as shown in Figure 3-6, for three reasons. First, the separation of transactional and analytical databases was due to limitations of technology—it was hard to have databases that could handle both transactional and analytical queries efficiently. However, this separation is being closed. Today, we have transactional databases that can handle analytical queries, such as CockroachDB. We also have analytical databases that can handle transactional queries, such as Apache Iceberg and DuckDB
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2092-2099 | Added on Saturday, July 15, 2023 11:16:32 AM
+
+Second, in the traditional OLTP or OLAP paradigms, storage and processing are tightly coupled—how data is stored is also how data is processed. This may result in the same data being stored in multiple databases and using different processing engines to solve different types of queries. An interesting paradigm in the last decade has been to decouple storage from processing (also known as compute), as adopted by many data vendors including Google’s BigQuery, Snowflake, IBM, and Teradata.21 In this paradigm, the data can be stored in the same place, with a processing layer on top that can be optimized for different types of queries.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2099-2101 | Added on Saturday, July 15, 2023 11:17:33 AM
+
+Third, “online” has become an overloaded term that can mean many different things. Online used to just mean “connected to the internet.” Then, it grew to also mean “in production”—we say a feature is online after that feature has been deployed in production.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2108-2113 | Added on Saturday, July 15, 2023 11:18:03 AM
+
+In the early days of the relational data model, data was mostly structured. When data is extracted from different sources, it’s first transformed into the desired format before being loaded into the target destination such as a database or a data warehouse. This process is called ETL, which stands for extract, transform, and load.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2138-2143 | Added on Sunday, July 16, 2023 7:36:07 AM
+
+flexibility of data lakes and the data management aspect of data warehouses. For example, Databricks and Snowflake both provide data lakehouse solutions. Modes
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2143-2147 | Added on Sunday, July 16, 2023 7:36:24 AM
+
+Modes of Dataflow In this chapter, we’ve been discussing data formats, data models, data storage, and processing for data used within the context of a single process. Most of the time, in production, you don’t have a single process but multiple. A question arises: how do we pass data between different processes that don’t share memory?
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2148-2151 | Added on Sunday, July 16, 2023 7:38:26 AM
+
+There are three main modes of dataflow: Data passing through databases Data passing through services using requests such as the requests provided by REST and RPC APIs (e.g., POST/GET requests) Data passing through a real-time transport like Apache Kafka and Amazon Kinesis
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2153-2162 | Added on Sunday, July 16, 2023 7:39:33 AM
+
+Data Passing Through Databases The easiest way to pass data between two processes is through databases, which we’ve discussed in the section “Data Storage Engines and Processing”. For example, to pass data from process A to process B, process A can write that data into a database, and process B simply reads from that database. This mode, however, doesn’t always work because of two reasons. First, it requires that both processes must be able to access the same database. This might be infeasible, especially if the two processes are run by two different companies. Second, it requires both processes to access data from databases, and read/write from databases can be slow, making it unsuitable for applications with strict latency requirements—e.g., almost all consumer-facing applications.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2164-2169 | Added on Sunday, July 16, 2023 7:42:29 AM
+
+Data Passing Through Services One way to pass data between two processes is to send data directly through a network that connects these two processes. To pass data from process B to process A, process A first sends a request to process B that specifies the data A needs, and B returns the requested data through the same network. Because processes communicate through requests, we say that this is request-driven.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2195-2202 | Added on Sunday, July 16, 2023 7:45:20 AM
+
+The most popular styles of requests used for passing data through networks are REST (representational state transfer) and RPC (remote procedure call). Their detailed analysis is beyond the scope of this book, but one major difference is that REST was designed for requests over networks, whereas RPC “tries to make a request to a remote network service look the same as calling a function or method in your programming language.” Because of this, “REST seems to be the predominant style for public APIs. The main focus of RPC frameworks is on requests between services owned by the same organization, typically within the same data center.”
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2225-2231 | Added on Sunday, July 16, 2023 7:49:11 AM
+
+Request-driven data passing is synchronous: the target service has to listen to the request for the request to go through. If the price optimization service requests data from the driver management service and the driver management service is down, the price optimization service will keep resending the request until it times out. And if the price optimization service is down before it receives a response, the response will be lost. A service that is down can cause all services that require data from it to be down. What if there’s a broker that coordinates data passing among services? Instead
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2225-2230 | Added on Sunday, July 16, 2023 7:49:19 AM
+
+Request-driven data passing is synchronous: the target service has to listen to the request for the request to go through. If the price optimization service requests data from the driver management service and the driver management service is down, the price optimization service will keep resending the request until it times out. And if the price optimization service is down before it receives a response, the response will be lost. A service that is down can cause all services that require data from it to be down.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2240-2244 | Added on Sunday, July 16, 2023 7:50:47 AM
+
+Technically, a database can be a broker—each service can write data to a database and other services that need the data can read from that database. However, as mentioned in the section “Data Passing Through Databases”, reading and writing from databases are too slow for applications with strict latency requirements. Instead of using databases to broker data, we use in-memory storage to broker data. Real-time transports can be thought of as in-memory storage for data passing among services.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2244-2247 | Added on Sunday, July 16, 2023 7:51:17 AM
+
+A piece of data broadcast to a real-time transport is called an event. This architecture is, therefore, also called event-driven. A real-time transport is sometimes called an event bus. Request-driven architecture works well for systems that rely more on logic than on data. Event-driven architecture works better for systems that are data-heavy.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2269-2279 | Added on Sunday, July 23, 2023 10:41:46 AM
+
+Batch Processing Versus Stream Processing Once your data arrives in data storage engines like databases, data lakes, or data warehouses, it becomes historical data. This is opposed to streaming data (data that is still streaming in). Historical data is often processed in batch jobs—jobs that are kicked off periodically. For example, once a day, you might want to kick off a batch job to compute the average surge charge for all the rides in the last day. When data is processed in batch jobs, we refer to it as batch processing. Batch processing has been a research subject for many decades, and companies have come up with distributed systems like MapReduce and Spark to process batch data efficiently.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2279-2280 | Added on Sunday, July 23, 2023 10:42:53 AM
+
+When you have data in real-time transports like Apache Kafka and Amazon Kinesis, we say that you have streaming data. Stream processing refers to doing computation on streaming data.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2286-2292 | Added on Sunday, July 23, 2023 10:44:27 AM
+
+Many people believe that stream processing is less efficient than batch processing because you can’t leverage tools like MapReduce or Spark. This is not always the case, for two reasons. First, streaming technologies like Apache Flink are proven to be highly scalable and fully distributed, which means they can do computation in parallel. Second, the strength of stream processing is in stateful computation. Consider the case where you want to process user engagement during a 30-day trial. If you kick off this batch job every day, you’ll have to do computation over the last 30 days every day. With stream processing, it’s possible to continue computing only the new data each day and joining the new data computation with the older data computation, preventing redundancy.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2294-2295 | Added on Sunday, July 23, 2023 10:48:58 AM
+
+Batch features—features extracted through batch processing—are also known as static features.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2295-2299 | Added on Sunday, July 23, 2023 10:49:32 AM
+
+Stream processing is used to compute features that change quickly, such as how many drivers are available right now, how many rides have been requested in the last minute, how many rides will be finished in the next two minutes, the median price of the last 10 rides in this area, etc. Features about the current state of the system like these are important to make the optimal price predictions. Streaming features—features extracted through stream processing—are also known as dynamic features.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 2310-2317 | Added on Sunday, July 23, 2023 10:54:45 AM
+
+Stream processing is more difficult because the data amount is unbounded and the data comes in at variable rates and speeds. It’s easier to make a stream processor do batch processing than to make a batch processor do stream processing. Apache Flink’s core maintainers have been arguing for years that batch processing is a special case of stream processing.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 3630-3633 | Added on Saturday, July 29, 2023 9:07:01 AM
+
+having the right features is the most important thing in developing their ML models. Since then, many of the companies that I’ve worked with have discovered time and time again that once they have a workable model, having the right features tends to give them the biggest performance boost compared to clever algorithmic techniques such as hyperparameter tuning.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 3675-3681 | Added on Saturday, July 29, 2023 9:10:50 AM
+
+Feature engineering requires knowledge of domain-specific techniques—in this case, the domain is natural language processing (NLP) and the native language of the text. It tends to be an iterative process, which can be brittle. When I followed this method for one of my early NLP projects, I kept having to restart my process either because I had forgotten to apply one technique or because one technique I used turned out to be working poorly and I had to undo
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6395-6403 | Added on Monday, August 7, 2023 8:12:46 AM
+
+His company learned the hard way an important lesson that the rest of the industry is also discovering: deploying a model isn’t the end of the process. A model’s performance degrades over time in production. Once a model has been deployed, we still have to continually monitor its performance to detect issues as well as deploy updates to fix these issues. In this chapter and the next, we’ll cover the necessary topics to help you keep a model in production. We’ll start by covering reasons why ML models that perform great during development fail in production. Then, we’ll take a deep dive into one especially prevalent and thorny issue that affects almost all ML models in production: data distribution shifts. This occurs when the data distribution in production differs and diverges from the data distribution the model was exposed to during training. We’ll continue with how to monitor for distribution shifts. In the next chapter, we’ll cover how to continually update your models in production to adapt to shifts in data distributions.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6405-6411 | Added on Monday, August 7, 2023 8:14:18 AM
+
+A failure happens when one or more expectations of the system is violated. In traditional software, we mostly care about a system’s operational expectations: whether the system executes its logic within the expected operational metrics, e.g., latency and throughput. For an ML system, we care about both its operational metrics and its ML performance metrics. For example, consider an English-French machine translation system. Its operational expectation might be that, given an English sentence, the system returns a French translation within a one-second latency. Its ML performance expectation is that the returned translation is an accurate translation of the original English sentence 99% of the time.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6424-6425 | Added on Monday, August 7, 2023 8:16:22 AM
+
+We’ll examine two types of failures: software system failures and ML-specific failures.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6426-6455 | Added on Monday, August 7, 2023 8:18:01 AM
+
+Software System Failures Software system failures are failures that would have happened to non-ML systems. Here are some examples of software system failures: Dependency failure A software package or a codebase that your system depends on breaks, which leads your system to break. This failure mode is common when the dependency is maintained by a third party, and especially common if the third party that maintains the dependency no longer exists.2 Deployment failure Failures caused by deployment errors, such as when you accidentally deploy the binaries of an older version of your model instead of the current version, or when your systems don’t have the right permissions to read or write certain files. Hardware failures When the hardware that you use to deploy your model, such as CPUs or GPUs, doesn’t behave the way it should. For example, the CPUs you use might overheat and break down.3 Downtime or crashing If a component of your system runs from a server somewhere, such as AWS or a hosted service, and that server is down, your system will also be down. Just because some failures are not specific to ML doesn’t mean they’re not important for ML engineers to understand.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6456-6457 | Added on Monday, August 7, 2023 8:19:02 AM
+
+They reviewed data from over the previous 15 years to determine the causes and found out that 60 out of these 96 failures happened due to causes not directly related to ML.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6456-6460 | Added on Monday, August 7, 2023 8:19:13 AM
+
+They reviewed data from over the previous 15 years to determine the causes and found out that 60 out of these 96 failures happened due to causes not directly related to ML.4 Most of the issues are related to distributed systems, e.g., where the workflow scheduler or orchestrator makes a mistake, or related to the data pipeline, e.g., where data from multiple sources is joined incorrectly or the wrong data structures are being used.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6470-6473 | Added on Monday, August 7, 2023 8:22:31 AM
+
+ML-Specific Failures ML-specific failures are failures specific to ML systems. Examples include data collection and processing problems, poor hyperparameters, changes in the training pipeline not correctly replicated in the inference pipeline and vice versa, data distribution shifts that cause a model’s performance to deteriorate over time, edge cases, and degenerate feedback loops.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6491-6494 | Added on Monday, August 7, 2023 8:25:00 AM
+
+the unseen data comes from a stationary distribution that is the same as the training data distribution. If the unseen data comes from a different distribution, the model might not generalize well.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6496-6497 | Added on Monday, August 7, 2023 8:27:52 AM
+
+First, the underlying distribution of the real-world data is unlikely to be the same as the underlying distribution of the training data.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6504-6507 | Added on Monday, August 7, 2023 8:28:42 AM
+
+Second, the real world isn’t stationary. Things change. Data distributions shift. In 2019, when people searched for Wuhan, they likely wanted to get travel information, but since COVID-19, when people search for Wuhan, they likely want to know about the place where COVID-19 originated.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 6508-6514 | Added on Monday, August 7, 2023 8:29:26 AM
+
+When I use COVID-19 as an example that causes data shifts, some people have the impression that data shifts only happen because of unusual events, which implies they don’t happen often. Data shifts happen all the time, suddenly, gradually, or seasonally. They can happen suddenly because of a specific event, such as when your existing competitors change their pricing policies and you have to update your price predictions in response, or when you launch your product in a new region, or when a celebrity mentions your product, which causes a surge in new users, and so on. They can happen gradually because social norms, cultures, languages, trends, industries, etc. just change over time. They can also happen due to seasonal variations, such as people might be more likely to request rideshares in the winter when it’s cold and snowy than in the spring.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 5522-5523 | Added on Tuesday, August 8, 2023 8:23:39 AM
+
+“Deploy” is a loose term that generally means making your model running and accessible.
+==========
+Designing Machine Learning Systems (Chip Huyen)
+- Your Highlight on Location 5553-5557 | Added on Tuesday, August 8, 2023 8:25:14 AM
+
+The hard parts include making your model available to millions of users with a latency of milliseconds and 99% uptime, setting up the infrastructure so that the right person can be immediately notified when something goes wrong, figuring out what went wrong, and seamlessly deploying the updates to fix what’s wrong.
+==========
