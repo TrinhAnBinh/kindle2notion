@@ -5,14 +5,12 @@ from checkpoint import logger
 today = datetime.datetime.now().strftime('%Y-%m-%d')
 
 class Notion:
-    def __init__(self, books, secret, database, url, updated_books):
+    def __init__(self, books, secret, database, url):
         self.books = books
-        self.secret = secret
         self.database = database
         self.url = url 
         self.root_url = 'https://api.notion.com/v1/pages/'
         self.notion_data_input = list
-        self.header = dict
         self.page_id = str
         self.basic_sort = {
                             "sorts": [
@@ -22,17 +20,11 @@ class Notion:
                                 }
                             ]
                         }
-        self.updated_books = updated_books
-    
-    def prepare_header(self) -> dict:
-        if self.secret:
-            self.header  =  {
-                'Authorization': f'Bearer {self.secret}',
+        self.header  =  {
+                'Authorization': f'Bearer {secret}',
                 'Content-Type': 'application/json',
                 'Notion-Version': '2022-06-28'
             }
-        else:
-            BaseException('secret is null, set the secret first')
 
     def convert_books_to_notion_inputs(self, book_notes):
         '''
@@ -117,39 +109,43 @@ class Notion:
         with requests.Session() as ses:
             response = ses.post(self.url, headers=self.header, json=book)
             if response.status_code == 200:
+                logger.info('Create pages successfully')
                 page_infor = response.json()
             else:
+                logger.error(f'Faile to create new pages - {response.status_code}')
                 raise BaseException(f'Status code - {response.status_code} !')
         self.page_id = page_infor['id']
-        return page_infor['id'] # page_id
+        return page_infor['id']
     
     def update_page_block(self, page_id: str, content: dict) -> str:
         '''
             Function to update content for given pages
         '''
         # url = f'https://api.notion.com/v1/blocks/{page_id}/children'
-        url = f'https://api.notion.com/v1/blocks/{self.page_id}/children'
+        url = f'https://api.notion.com/v1/blocks/{page_id}/children'
         with requests.Session() as ses:
             response = ses.patch(url, headers=self.header, json=content)
             if response.status_code == 200:
-                return 'Updated !'
+                logger.info('Update page successfully')
             else:
-                return f'Not yet - status code: {response.status_code}'
+                logger.error(f'status code {response.status_code} - can not updated pages')
+            return response.status_code
 
-    def update_page_blocks(self, books):
+    def update_page_blocks(self, books, updated_books):
         if books:
             checkpoint = []
             for ix, book in enumerate(books):
                 if book:
                     book_name = book['properties']['title']['title'][0]['text']['content']
-                    page_id = self.updated_books[ix]['page_id']
+                    page_id = updated_books[ix]['page_id']
                     if len(book['children']) < 100:
                         updated_block = {
                             'children' : book['children']
                         }
                         status = self.update_page_block(page_id, updated_block)
-                        book_info = {'book_name': book_name, 'page_id': page_id, 'database_id': self.database, 'block_offset': len(self.updated_books[ix]['note']), 'created_time': today, 'updated_time': today}
-                        checkpoint.append(book_info)
+                        if status == 200:
+                            book_info = {'book_name': book_name, 'page_id': page_id, 'database_id': self.database, 'block_offset': len(updated_books[ix]['note']), 'created_time': today, 'updated_time': today}
+                            checkpoint.append(book_info)
                     else:
                         lock_input = book.copy()
                         start = 0
@@ -161,10 +157,11 @@ class Notion:
                             updated_block = {
                                 'children' : lock_input['children'][start : end]
                             }
-                            status = self.update_page_block(page_id, updated_block)
+                            status = update_page_block(page_id, updated_block)
                             time.sleep(1)
-                            start += num_of_blocks 
-                        book_info = {'book_name': book_name, 'page_id': page_id, 'database_id': self.database, 'block_offset': len(self.updated_books[ix]['note']), 'created_time': today, 'updated_time': today}
+                            if status == 200:
+                                start += num_of_blocks 
+                        book_info = {'book_name': book_name, 'page_id': page_id, 'database_id': self.database, 'block_offset': len(updated_books[ix]['note']), 'created_time': today, 'updated_time': today}
                         checkpoint.append(book_info)
                 else:
                     logger.info('Book have no new notes')
