@@ -7,6 +7,7 @@ This read me as guide for:
 - [x]  add the update pages
 - [x]  separate the list into 100 items in a list
 - [x]  if number of block ≥ 100 then retrieve pages id and add block by updating pages
+- [ ]  add logger for main, notion, processor
 
 **Feat**
 
@@ -22,7 +23,8 @@ This read me as guide for:
     - [x]  construct the checkpoint abstract
     - [x]  apply the checkpoint after create pages
     - [x]  save the checkpoint data into the checkpoint file after creating the page
-    - [ ]  load checkpoint information from file (checkpoint.json), base on that filtering number of note.
+    - [x]  load checkpoint information from file (checkpoint.json), base on that filtering number of note.
+    - [ ]  fix the bug can not update the pages content but can update checkpoint value - max block offset
     - [ ]  define the mode (update page or create new page?)
 - [ ]  Restructure project with poetry
     - [x]  install poetry

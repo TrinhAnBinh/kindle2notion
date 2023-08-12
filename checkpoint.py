@@ -5,7 +5,7 @@ import json
 
 # Configure the logger
 logging.basicConfig(
-    level=logging.ERROR,  # Set the logging level to DEBUG (you can adjust this)
+    level=logging.INFO,  # Set the logging level to DEBUG (you can adjust this)
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 # Create a logger instance
@@ -99,9 +99,9 @@ class Checkpoint:
                     except Exception as e:
                         logger.error(f'Can not parse json data - {e}')
             else:
-                logger.error(f'File path is not valid - {self.abs_path}')
+                logger.info(f'File path is not valid - {self.abs_path}')
         else:
-            logger.error(f'Given file path name is not valid - {self.path}')
+            logger.error(f'File name is wrong: json only - {self.path}')
     
     def construct_checkpoint(self, pages_info):
         '''
@@ -111,20 +111,23 @@ class Checkpoint:
         if self.validate_info(pages_info):
             try:
                 old_pages = self.load()
-                added_page = []
-                for nv in pages_info:
-                    for ix , ov in enumerate(old_pages):
-                        if ov['page_id'] == nv['page_id']:   
-                            ov['block_offset'] =  nv['block_offset'] # todo verify the logic, replace or accumulate the value?
-                            break
-                        else:
-                            if ix == len(old_pages) - 1: # check is last item
-                                added_page.append(nv)
+                if old_pages:
+                    added_page = []
+                    for nv in pages_info:
+                        for ix , ov in enumerate(old_pages):
+                            if ov['page_id'] == nv['page_id']:   
+                                ov['block_offset'] +=  nv['block_offset'] # todo verify the logic, replace or accumulate the value?
                                 break
                             else:
-                                next
-                updated_info = old_pages + added_page
-                return updated_info
+                                if ix == len(old_pages) - 1: # check is last item
+                                    added_page.append(nv)
+                                    break
+                                else:
+                                    next
+                    updated_info = old_pages + added_page
+                    return updated_info
+                else:
+                    return pages_info
             except:
                 return pages_info
         else:
