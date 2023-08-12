@@ -7,7 +7,7 @@ This read me as guide for:
 - [x]  add the update pages
 - [x]  separate the list into 100 items in a list
 - [x]  if number of block ≥ 100 then retrieve pages id and add block by updating pages
-- [ ]  add logger for main, notion, processor
+- [ ]  can not compare the Vietnamese string → create new pages instead of updated the vietnamese book `important`
 
 **Feat**
 
@@ -19,23 +19,20 @@ This read me as guide for:
 - [ ]  build skeleton to project: Clipper, Processor, Pages to update and easy in scale
     - [x]  Processor
     - [x]  Notion
-- [ ]  Add check point to only process new updated highlight - `important`
+- [x]  Add check point to only process new updated highlight - `important`
     - [x]  construct the checkpoint abstract
     - [x]  apply the checkpoint after create pages
     - [x]  save the checkpoint data into the checkpoint file after creating the page
     - [x]  load checkpoint information from file (checkpoint.json), base on that filtering number of note.
-    - [ ]  fix the bug can not update the pages content but can update checkpoint value - max block offset
-    - [ ]  define the mode (update page or create new page?)
+    - [x]  define the mode (update page or create new page?)
 - [ ]  Restructure project with poetry
     - [x]  install poetry
     - [x]  get familiar with poetry CLI  - create and format project
     - [ ]  apply for the pages
+    - [ ]  pip install unidecode
 - [ ]  Add CICD to execute when push the clipping on the github
 - [ ]  Add Pipe → control flow - `ideal`
-
-**Docs**
-
-- [ ]  add the motivation into the pages
+- [ ]  Add the vietnamese bug
 ---    
     ```python
     def function1():
