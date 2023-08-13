@@ -2,12 +2,18 @@ This read me as guide for:
 
 ### Todo
 
+**Limitation**
+
+> The “**kindle2notion**” only covers the updated clipping from Kindle, it means that you should not delete any notes from your clipping, only append. The checkpoint using the number of highlights as index, and it will provide wrong index if you delete old data - clipping hight
+> 
+
 **Fix**
 
 - [x]  add the update pages
 - [x]  separate the list into 100 items in a list
 - [x]  if number of block ≥ 100 then retrieve pages id and add block by updating pages
-- [ ]  can not compare the Vietnamese string → create new pages instead of updated the vietnamese book `important`
+- [x]  can not compare the Vietnamese string → create new pages instead of updated the vietnamese book `important`
+    - [x]  the root cause is comparison logic not the Vietnamese or not.
 
 **Feat**
 
@@ -32,7 +38,7 @@ This read me as guide for:
     - [ ]  pip install unidecode
 - [ ]  Add CICD to execute when push the clipping on the github
 - [ ]  Add Pipe → control flow - `ideal`
-- [ ]  Add the vietnamese bug
+- [x]  Add the vietnamese bug
 ---    
     ```python
     def function1():
