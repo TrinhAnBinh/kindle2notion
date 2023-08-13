@@ -24,31 +24,36 @@ check = Checkpoint('checkpoint.json')
 checkpoint = check.load()
 
 books = processor.books
+        
 # filter highlight base on the checkpoint
-def filter_books(books):
+def filter_books(books, checkpoint):
     if books:
         if checkpoint:
             new_books = []
             updated_books = []
             mode_books = []
+            old_books = [cp['book_name'].lower().strip() for cp in checkpoint]
             for book in books:
-                for cp in checkpoint:
-                    if unidecode(book['book_name'].lower()) == unidecode(cp['book_name'].lower()): # old book
-                        book.update({
-                            "page_id" : cp['page_id'],
-                            'mode': 'update'
-                        })
-                        max_position = cp['block_offset']
-                        if max_position < len(book['note']): # book was added new notes
-                            book['note'] = book['note'][max_position:] 
-                            book['location'] = book['location'][max_position:] 
-                        else:
-                            book['note'] = []
-                            book['location'] = []
-                    else:
-                        book.update({
-                            'mode' : 'create'
-                        })
+                if book['book_name'].lower().strip() in old_books:
+                    # list of old books need to updated notes
+                    for cp in checkpoint:
+                        if book['book_name'].lower().strip() == cp['book_name'].lower().strip(): # old book
+                            book.update({
+                                "page_id" : cp['page_id'],
+                                'mode': 'update'
+                            })
+                            max_position = cp['block_offset']
+                            if max_position < len(book['note']): # book was added new notes
+                                book['note'] = book['note'][max_position:] 
+                                book['location'] = book['location'][max_position:] 
+                            else:
+                                book['note'] = []
+                                book['location'] = []
+                else:
+                    # New books need to create pages
+                    book.update({
+                        'mode' : 'create'
+                    })
                 mode_books.append(book)
             for book in mode_books:
                 if len(book['note']) > 0:
@@ -64,7 +69,7 @@ def filter_books(books):
         else:
             return books, []
 
-new_books, updated_books = filter_books(books)
+new_books, updated_books = filter_books(books, checkpoint)
 
 if not new_books and not updated_books:
     logger.info('No new books and blocks for books')
