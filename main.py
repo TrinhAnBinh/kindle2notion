@@ -5,28 +5,29 @@ from checkpoint import Checkpoint
 from checkpoint import logger
 from unidecode import unidecode
 
-# load configuration
-f = open('config.json')
-conf = json.load(f)
-secret = conf['api_token']
-database = conf['database']
-url = conf['root_url']
+def load_config():
+    # load configuration
+    f = open('config.json')
+    conf = json.load(f)
+    secret = conf['api_token']
+    database = conf['database']
+    url = conf['root_url']
+    return secret, database, url
 
-# construct the processor
-processor = Processor(PATH)
-processor.collect_highlight()
-processor.process_notes()
-processor.convert_book()
+def exe_pipe(instance, pipe, seperator = '>>'):
+    run_pipes = pipe.split(seperator)
+    for f in run_pipes:
+        f = f.strip()
+        func = getattr(instance, f)
+        if callable(func):
+                func()
+        else:
+            logger.error(f"Error: '{f}' is not a callable function.")
 
-# construct checkpoint
-check = Checkpoint('checkpoint.json')
-# load checkpoint
-checkpoint = check.load()
-
-books = processor.books
-        
-# filter highlight base on the checkpoint
 def filter_books(books, checkpoint):
+    '''
+        Filter highlight base on the checkpoint
+    '''
     if books:
         if checkpoint:
             new_books = []
@@ -69,6 +70,18 @@ def filter_books(books, checkpoint):
         else:
             return books, []
 
+# load configuration
+secret, database, url = load_config()
+# construct the processor
+processor = Processor(PATH)
+exe_pipe(processor,'collect_highlight >> process_notes >> convert_book')
+# construct checkpoint
+check = Checkpoint('checkpoint.json')
+# load checkpoint
+checkpoint = check.load()
+# load books
+books = processor.books
+# filter books
 new_books, updated_books = filter_books(books, checkpoint)
 
 if not new_books and not updated_books:
@@ -89,7 +102,7 @@ else:
         check_points_updated = notion.update_page_blocks(books=_updated, updated_books=updated_books)
         for check_point_updated in check_points_updated:
             check_point.append(check_point_updated)
-    
+
     # query and save the pages information into the file
     pages_infor_path = 'pages.json'
     notion.get_pages(pages_infor_path=pages_infor_path)
@@ -97,5 +110,3 @@ else:
     updated_page_infor = check.construct_checkpoint(check_point)
     # save checkpoint to file
     check.save(updated_page_infor)
-
-    # processor.collect_highlight() >> processor.process_notes()

@@ -224,7 +224,6 @@ class Notion:
             response = ses.post(url, headers=self.header, json=self.basic_sort)
             if response.status_code == 200:
                 with open(pages_infor_path, 'w', encoding='utf-8') as f:
-                    # f.write(json.dumps(response.json(), ensure_ascii=False).encode('utf-8'))
                     json.dump(response.json(), f, ensure_ascii=False)
             else:
                 return f'Not yet - status code: {response.status_code}'
