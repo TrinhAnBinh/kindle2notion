@@ -3,4 +3,3 @@ config.json
 pages.json
 checkpoint.json
 *.txt
-*.sh
