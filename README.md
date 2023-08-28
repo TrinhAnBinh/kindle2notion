@@ -16,7 +16,7 @@ This read me as guide for:
     - [x]  the root cause is comparison logic not the Vietnamese or not.
 
 **Feat**
-- [x]  add auto commit git
+- [x]  add auto git add, git commit
 - [ ]  build the CLI as k2n CLI
 - [ ]  dockerize the application
 - [x]  retrieve the page id
